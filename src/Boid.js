@@ -35,8 +35,17 @@ class Boid {
     update() {
         this.age += 1;
 
+        let anxiety = 1 - 2 * this.hp / this.maxhp;
+        if (anxiety < 0) { anxiety = 0; }
+
+        this.flockArgs.cohesion = 0.7 * (1 - anxiety);
+        this.flockArgs.separate = 0.9 * (1 - anxiety);
+        this.flockArgs.align = 0.6 * (1 - anxiety);
+
+        this.a.limitLength(this.maxAcc);
+        this.a.mul(1 + 10 * anxiety);
         this.v.add(this.a);
-        this.v.limitLength(this.maxVel);
+        this.v.limitLength(this.maxVel * (1 + 3 * anxiety));
         this.x.add(this.v);
         this.a.clear();
 
@@ -63,7 +72,7 @@ class Boid {
         if (target !== null) {
             target.setLength(this.maxVel);
             let steer = vec2d.sub(target, this.v);
-            steer.limitLength(this.maxForce);
+            steer.limitLength(this.maxAcc);
             this.addAcc(steer);
         }
     }
