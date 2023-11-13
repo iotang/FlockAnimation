@@ -50,6 +50,11 @@ class BoidType {
         return this;
     }
 
+    setRangeMultiplier(r) {
+        this.rangeMultiplier = r;
+        return this;
+    }
+
     build() {
         return new Boid(this.x.x, this.x.y, this.size, this.color, this);
     }
@@ -61,18 +66,35 @@ let TypeCreature = new BoidType(CREATURE)
     .setMaxHP(100)
     .setHPLoss(0.01)
     .setMaxVel(2.0)
-    .setMaxAcc(0.10);
+    .setMaxAcc(0.10)
+    .setRangeMultiplier(6);
 
 let TypePredator = new BoidType(PREDATOR)
     .setSize(10)
     .setMaxSize(20)
     .setColor([255, 0, 255])
     .setMaxHP(300)
-    .setHPLoss(0.04)
+    .setHPLoss(0.1)
     .setMaxVel(2.2)
     .setMaxAcc(0.11)
+    .setRangeMultiplier(4)
     .setFlockBaseArgs({
-        cohesion: -0.1,
+        cohesion: -0.5,
+        separate: 1.0,
+        align: 0.0
+    });
+
+let TypeLeviathan = new BoidType(LEVIATHAN)
+    .setSize(80)
+    .setMaxSize(200)
+    .setColor([127, 0, 255])
+    .setMaxHP(2000)
+    .setHPLoss(0.01)
+    .setMaxVel(0.1)
+    .setMaxAcc(0.003)
+    .setRangeMultiplier(2)
+    .setFlockBaseArgs({
+        cohesion: -1.0,
         separate: 1.0,
         align: 0.0
     });

@@ -15,6 +15,7 @@ class Boid {
         this.maxAcc = type.maxAcc || 0.1;
         this.maxSize = type.maxSize || 20;
         this.size = size || type.size || (this.maxSize / 4);
+        this.rangeMultiplier = type.rangeMultiplier || 4;
 
         this.flock = new FlockCalculator(this);
         this.flockBaseArgs = type.flockBaseArgs || {
@@ -23,6 +24,10 @@ class Boid {
             align: 0.6
         };
         this.flockArgs = this.flockBaseArgs;
+    }
+
+    range() {
+        return this.size * this.rangeMultiplier;
     }
 
     addAcc(a) {
@@ -74,6 +79,7 @@ class Boid {
             target.setLength(this.maxVel);
             let steer = vec2d.sub(target, this.v);
             steer.limitLength(this.maxAcc);
+            steer.mul(10);
             this.addAcc(steer);
         }
     }
@@ -115,7 +121,7 @@ class Boid {
     }
 
     makeItemEffect(list, weight, effect) {
-        let dir = this.takeItem(list, this.size * 4, effect);
+        let dir = this.takeItem(list, this.range(), effect);
         dir.mul(weight);
         this.addAcc(dir);
     }

@@ -36,7 +36,7 @@ class FlockCalculator {
     }
 
     separate(others) {
-        let distance = this.current.size * 4;
+        let distance = this.current.range();
         let sumacc = new vec2d(0, 0);
         let count = 0;
         for (let i = 0; i < others.length; i++) {

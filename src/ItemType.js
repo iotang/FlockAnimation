@@ -13,6 +13,11 @@ class ItemType {
         return this;
     }
 
+    setColor(c) {
+        this.color = c;
+        return this;
+    }
+
     setHPDelta(h) {
         this.hpDelta = h;
         return this;
@@ -33,4 +38,16 @@ class ItemType {
     }
 }
 
-let TypeTarget = new ItemType(TARGET);
+let TypeTarget = new ItemType(TARGET)
+    .setHPDelta(50)
+    .setMaxHPDelta(1)
+    .setSizeDelta(0.1)
+    .setColor([0, 0, 0])
+    .setSize(2);
+
+let TypeSuperTarget = new ItemType(TARGET)
+    .setHPDelta(100)
+    .setMaxHPDelta(2)
+    .setSizeDelta(1)
+    .setColor([0, 0, 255])
+    .setSize(4);
