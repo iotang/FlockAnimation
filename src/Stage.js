@@ -24,7 +24,9 @@ class Stage {
 
     spawnCreatures(list, type, num) {
         for (let i = 0; i < num; i++) {
-            addCreature(list, type);
+            let x = randomlr(WINDOW_WIDTH);
+            let y = randomlr(WINDOW_HEIGHT);
+            addBoid(list, type.setX(x, y).build());
         }
     }
 
@@ -44,14 +46,12 @@ class Stage {
 
         let like = [];
         for (const i in behav.like) {
-            if (this.itemLists[behav.like[i]] !== undefined) {
-                like.push(this.itemLists[behav.like[i]]);
-            }
-        }
-        let dislike = [];
-        for (const i in behav.dislike) {
-            if (this.itemLists[behav.dislike[i]] !== undefined) {
-                dislike.push(this.itemLists[behav.dislike[i]]);
+            if (this.itemLists[i] !== undefined) {
+                like.push({
+                    list: this.itemLists[i],
+                    weight: behav.like[i].weight,
+                    effect: behav.like[i].effect
+                });
             }
         }
         let interact = [];
@@ -59,9 +59,9 @@ class Stage {
             if (this.creatureBuilders[i] !== undefined) {
                 interact.push({
                     list: this.creatureLists[i],
-                    weight: behav.interact[i][0],
-                    range: behav.interact[i][1],
-                    callback: behav.interact[i][2]
+                    weight: behav.interact[i].weight,
+                    range: behav.interact[i].range,
+                    callback: behav.interact[i].callback
                 });
             }
         }
@@ -69,21 +69,17 @@ class Stage {
         this.behaviours[behav.name] = {
             list: list,
             like: like,
-            dislike: dislike,
             interact: interact,
             callback: behav.callback
         };
     }
 
-    updateCreatures(list, like, dislike, callback) {
+    updateCreatures(list, like, callback) {
         for (let i = 0; i < list.length; i++) {
             list[i].update();
             list[i].makeFlockEffect(list);
             for (let j in like) {
-                list[i].makeItemEffect(like[j], 1);
-            }
-            for (let j in dislike) {
-                list[i].makeItemEffect(dislike[j], -1);
+                list[i].makeItemEffect(like[j].list, like[j].weight, like[j].effect);
             }
             list[i].stayInStage();
 
@@ -101,10 +97,10 @@ class Stage {
     update() {
         for (const i in this.behaviours) {
             const behav = this.behaviours[i];
-            this.updateCreatures(behav.list, behav.like, behav.dislike, (list, i) => {
+            this.updateCreatures(behav.list, behav.like, (list, i) => {
                 let current = list[i];
                 for (let j in behav.interact) {
-                    current.makeInteractEffect(j.list, j.range, j.weight, j.callback);
+                    current.makeInteractEffect(behav.interact[j].list, behav.interact[j].range, behav.interact[j].weight, behav.interact[j].callback);
                 }
                 if (behav.callback !== undefined) {
                     behav.callback.call(current);

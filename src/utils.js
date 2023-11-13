@@ -1,3 +1,7 @@
+let showhpCheckbox = document.getElementById('show_hp');
+let showItemRangeCheckbox = document.getElementById('show_item_range');
+let showInteractRangeCheckbox = document.getElementById('show_interact_range');
+
 function randomlr(l, r) {
     if (r === undefined) return Math.random() * l;
     return l + Math.random() * r;
@@ -19,14 +23,12 @@ function outsideStage(x, y, distan) {
     return false;
 }
 
-function addCreature(list, type) {
-    let x = randomlr(WINDOW_WIDTH);
-    let y = randomlr(WINDOW_HEIGHT);
-    while (outsideStage(x, y, type.size)) {
-        x = randomlr(WINDOW_WIDTH);
-        y = randomlr(WINDOW_HEIGHT);
+function addBoid(list, boid, limit) {
+    if (limit === undefined || list.length < limit) {
+        list.push(boid);
+        return 1;
     }
-    list.push(type.setX(x, y).build());
+    return 0;
 }
 
 function addItem(list, type, fx, fy) {

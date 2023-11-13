@@ -6,7 +6,7 @@ class Item {
 
         this.hpDelta = type.hpDelta || 50;
         this.maxhpDelta = type.maxhpDelta || 1;
-        this.sizeDelta = type.sizeDelta || 0.05;
+        this.sizeDelta = type.sizeDelta || 0.1;
         this.color = type.color || [0, 0, 0];
     }
 

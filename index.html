@@ -9,6 +9,21 @@
 <body>
   <canvas id="MainCanvas"></canvas>
 
+  <div> 
+    <label>
+      <input type="checkbox" id="show_hp">
+      <span class="label-text">显示 HP</span>
+    </label>
+    <label>
+      <input type="checkbox" id="show_item_range">
+      <span class="label-text">显示物体感知范围</span>
+    </label>
+    <label>
+      <input type="checkbox" id="show_interact_range">
+      <span class="label-text">显示追逐/躲避感知范围</span>
+    </label>
+  </div>
+
   <script src="./src/vec2d.js"></script>
   <script src="./src/index.js"></script>
   <script src="./src/Boid.js"></script>
