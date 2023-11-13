@@ -1,11 +1,11 @@
-let canvas = document.querySelector("#MainCanvas");
+let canvas = document.getElementById("MainCanvas");
 let ctx = canvas.getContext("2d");
 
 const WINDOW_WIDTH = 1600;
 const WINDOW_HEIGHT = 900;
 const WINDOW_BORDER = 20;
 const MAX_CREATURES = 500;
-const MAX_PREDATORS = 10;
+const MAX_PREDATORS = 100;
 
 canvas.width = WINDOW_WIDTH;
 canvas.height = WINDOW_HEIGHT;
@@ -46,7 +46,7 @@ window.onload = function () {
         TARGET: TypeTarget,
         SUPERTARGET: TypeSuperTarget,
     });
-    stage.makeCreatures({
+    stage.makeBoids({
         CREATURE: TypeCreature,
         PREDATOR: TypePredator,
         LEVIATHAN: TypeLeviathan,
@@ -71,7 +71,7 @@ window.onload = function () {
         while (stage.creatureLists.CREATURE.length > MAX_CREATURES) {
             stage.creatureLists.CREATURE.pop();
         }
-        while (stage.creatureLists.CREATURE.length < MAX_PREDATORS / 10) {
+        while (stage.creatureLists.PREDATOR.length < 1) {
             stage.spawnPopulation({
                 PREDATOR: 1
             });
@@ -129,7 +129,7 @@ window.onload = function () {
                 callback: function (list, i) {
                     this.maxhp += list[i].size;
                     this.hp += list[i].size * 10;
-                    this.size += list[i].size / 10;
+                    this.size += list[i].size / 20;
                     this.maxhp = bound(this.maxhp, 1, Infinity);
                     this.hp = bound(this.hp, 0, this.maxhp);
 
@@ -188,9 +188,29 @@ window.onload = function () {
         }
     });
 
+    canvas.addEventListener('click', function (e) {
+        let clickAddType = document.getElementById('click_add').value;
+        if (clickAddType == CREATURE) {
+            addBoid(stage.creatureLists.CREATURE, TypeCreature.setX(e.offsetX, e.offsetY).build());
+        } else if (clickAddType == PREDATOR) {
+            addBoid(stage.creatureLists.PREDATOR, TypePredator.setX(e.offsetX, e.offsetY).build());
+        } else if (clickAddType == LEVIATHAN) {
+            addBoid(stage.creatureLists.LEVIATHAN, TypeLeviathan.setX(e.offsetX, e.offsetY).build());
+        } else if (clickAddType == TARGET) {
+            addBoid(stage.itemLists.TARGET, TypeTarget.setX(e.offsetX, e.offsetY).build());
+        } else if (clickAddType == SUPERTARGET) {
+            addBoid(stage.itemLists.SUPERTARGET, TypeSuperTarget.setX(e.offsetX, e.offsetY).build());
+        }
+    })
+
     function animate() {
         ctx.fillStyle = `rgb(248, 248, 248)`;
         ctx.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        cohesionSliderValue.textContent = cohesionSlider.value;
+        separateSliderValue.textContent = separateSlider.value;
+        alignSliderValue.textContent = alignSlider.value;
+        wanderSliderValue.textContent = wanderSlider.value;
 
         stage.render();
         stage.update();

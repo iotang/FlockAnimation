@@ -4,6 +4,16 @@ let showAgeCheckbox = document.getElementById('show_age');
 let showItemRangeCheckbox = document.getElementById('show_item_range');
 let showInteractRangeCheckbox = document.getElementById('show_interact_range');
 
+let cohesionSlider = document.getElementById('range_cohesion');
+let separateSlider = document.getElementById('range_separate');
+let alignSlider = document.getElementById('range_align');
+let wanderSlider = document.getElementById('range_wander');
+
+let cohesionSliderValue = document.getElementById('range_cohesion_value');
+let separateSliderValue = document.getElementById('range_separate_value');
+let alignSliderValue = document.getElementById('range_align_value');
+let wanderSliderValue = document.getElementById('range_wander_value');
+
 function randomlr(l, r) {
     if (r === undefined) return Math.random() * l;
     return l + Math.random() * r;

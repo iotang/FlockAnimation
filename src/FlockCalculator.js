@@ -2,6 +2,7 @@ class FlockCalculator {
 
     constructor(current) {
         this.current = current;
+        this.wanderDirection = 0;
     }
 
     makeSteer(dir) {
@@ -72,5 +73,17 @@ class FlockCalculator {
             return this.makeSteer(sumacc);
         }
         return new vec2d(0, 0);
+    }
+
+    wander() {
+        this.wanderDirection += randomlr(-0.0001, 0.0001);
+
+        let wanderCircleDistance = 100;
+        let wanderCircleRadius = 20;
+        let wanderCircle = this.current.v.copy();
+        wanderCircle.setLength(wanderCircleDistance);
+        let miniCircle = vec2d.random_unit(this.wanderDirection).setLength(wanderCircleRadius);
+        let location = vec2d.add(wanderCircle, miniCircle);
+        return this.makeSteer(location);
     }
 }

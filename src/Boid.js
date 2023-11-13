@@ -21,7 +21,8 @@ class Boid {
         this.flockBaseArgs = type.flockBaseArgs || {
             cohesion: 0.7,
             separate: 0.9,
-            align: 0.6
+            align: 0.6,
+            wander: 1.0,
         };
         this.flockArgs = this.flockBaseArgs;
     }
@@ -36,6 +37,10 @@ class Boid {
 
     alive() {
         return this.hp > 0;
+    }
+
+    setFlockBaseArgs(v) {
+        this.flockBaseArgs = v;
     }
 
     update() {
@@ -94,6 +99,14 @@ class Boid {
         this.addAcc(c);
         this.addAcc(s);
         this.addAcc(a);
+    }
+
+    makeWander() {
+        if (this.a.length() < 0.000001) {
+            let w = this.flock.wander();
+            w.setLength(this.maxAcc * this.flockBaseArgs.wander);
+            this.addAcc(w);
+        }
     }
 
     takeItem(list, range, effect) {

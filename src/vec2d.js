@@ -129,6 +129,6 @@ class vec2d {
     }
 
     static random_unit() {
-        return unit(Math.random() * Math.PI * 2);
+        return vec2d.unit(Math.random() * Math.PI * 2);
     }
 }

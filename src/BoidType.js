@@ -70,8 +70,8 @@ let TypeCreature = new BoidType(CREATURE)
     .setRangeMultiplier(6);
 
 let TypePredator = new BoidType(PREDATOR)
-    .setSize(10)
-    .setMaxSize(20)
+    .setSize(7)
+    .setMaxSize(30)
     .setColor([255, 0, 255])
     .setMaxHP(100)
     .setHPLoss(0.1)
@@ -81,7 +81,8 @@ let TypePredator = new BoidType(PREDATOR)
     .setFlockBaseArgs({
         cohesion: 0.0,
         separate: 10.0,
-        align: 0.0
+        align: 0.0,
+        wander: 1.0,
     });
 
 let TypeLeviathan = new BoidType(LEVIATHAN)
@@ -96,5 +97,6 @@ let TypeLeviathan = new BoidType(LEVIATHAN)
     .setFlockBaseArgs({
         cohesion: -1.0,
         separate: 1.0,
-        align: 0.0
+        align: 0.0,
+        wander: 0.0,
     });
