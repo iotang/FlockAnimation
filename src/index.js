@@ -1,25 +1,11 @@
 let canvas = document.querySelector("#MainCanvas");
 let ctx = canvas.getContext("2d");
 
-const WINDOW_WIDTH = 1000;
-const WINDOW_HEIGHT = 1000;
+const WINDOW_WIDTH = 1600;
+const WINDOW_HEIGHT = 900;
 const WINDOW_BORDER = 20;
-const MAX_CREATURES = 200;
+const MAX_CREATURES = 500;
 const MAX_PREDATORS = 10;
-
-let FEELINGS = {};
-
-FEELINGS[CREATURE] = {};
-FEELINGS[CREATURE][PREDATOR] = 100;
-FEELINGS[CREATURE][LEVIATHAN] = 150;
-
-FEELINGS[PREDATOR] = {};
-FEELINGS[PREDATOR][CREATURE] = 150;
-FEELINGS[PREDATOR][LEVIATHAN] = 250;
-
-FEELINGS[LEVIATHAN] = {};
-FEELINGS[LEVIATHAN][CREATURE] = 100;
-FEELINGS[LEVIATHAN][PREDATOR] = 100;
 
 canvas.width = WINDOW_WIDTH;
 canvas.height = WINDOW_HEIGHT;
@@ -29,6 +15,8 @@ const PREDATOR = 'PREDATOR';
 const LEVIATHAN = 'LEVIATHAN';
 const TARGET = 'TARGET';
 const SUPERTARGET = 'SUPERTARGET';
+
+let FEELINGS = {};
 
 let statistics = document.getElementById('statistics');
 function renderStatistics(data) {
@@ -41,6 +29,18 @@ function renderStatistics(data) {
 
 window.onload = function () {
 
+    FEELINGS[CREATURE] = {};
+    FEELINGS[CREATURE][PREDATOR] = 100;
+    FEELINGS[CREATURE][LEVIATHAN] = 150;
+
+    FEELINGS[PREDATOR] = {};
+    FEELINGS[PREDATOR][CREATURE] = 150;
+    FEELINGS[PREDATOR][LEVIATHAN] = 250;
+
+    FEELINGS[LEVIATHAN] = {};
+    FEELINGS[LEVIATHAN][CREATURE] = 100;
+    FEELINGS[LEVIATHAN][PREDATOR] = 100;
+
     const stage = new Stage();
     stage.makeItems({
         TARGET: TypeTarget,
@@ -52,8 +52,8 @@ window.onload = function () {
         LEVIATHAN: TypeLeviathan,
     });
     stage.spawnPopulation({
-        CREATURE: 50,
-        PREDATOR: 5,
+        CREATURE: 200,
+        PREDATOR: 10,
         LEVIATHAN: 1,
     });
 
@@ -63,8 +63,18 @@ window.onload = function () {
     }
 
     function populationLimit() {
+        while (stage.creatureLists.CREATURE.length < MAX_CREATURES / 10) {
+            stage.spawnPopulation({
+                CREATURE: 1
+            });
+        }
         while (stage.creatureLists.CREATURE.length > MAX_CREATURES) {
             stage.creatureLists.CREATURE.pop();
+        }
+        while (stage.creatureLists.CREATURE.length < MAX_PREDATORS / 10) {
+            stage.spawnPopulation({
+                PREDATOR: 1
+            });
         }
         while (stage.creatureLists.PREDATOR.length > MAX_PREDATORS) {
             stage.creatureLists.PREDATOR.pop();
@@ -95,7 +105,7 @@ window.onload = function () {
         },
         callback: function () {
             if (this.size >= this.maxSize * 0.9) {
-                this.breed(stage.creatureLists.CREATURE, 10, MAX_CREATURES);
+                this.breed(stage.creatureLists.CREATURE, Math.ceil(randomlr(15, 30)), MAX_CREATURES);
             }
         }
     });
@@ -104,7 +114,7 @@ window.onload = function () {
         name: PREDATOR,
         like: {
             TARGET: {
-                weight: 1.0,
+                weight: 0.2,
                 effect: 0.1,
             },
             SUPERTARGET: {
@@ -114,7 +124,7 @@ window.onload = function () {
         },
         interact: {
             CREATURE: {
-                weight: 1.0,
+                weight: 0.4,
                 range: FEELINGS[PREDATOR][CREATURE],
                 callback: function (list, i) {
                     this.maxhp += list[i].size;
@@ -145,10 +155,6 @@ window.onload = function () {
                 weight: 1.0,
                 effect: 0.1,
             },
-            SUPERTARGET: {
-                weight: 1.0,
-                effect: 0.1,
-            },
         },
         interact: {
             CREATURE: {
@@ -175,6 +181,11 @@ window.onload = function () {
                 }
             }
         },
+        callback: function () {
+            if (this.age % 80 == 0) {
+                addItem(stage.itemLists.SUPERTARGET, TypeSuperTarget, this.x.x, this.x.y);
+            }
+        }
     });
 
     function animate() {
@@ -192,6 +203,9 @@ window.onload = function () {
             }
             for (let i in stage.creatureLists.PREDATOR) {
                 stage.creatureLists.PREDATOR[i].renderCircle(ctx, 'green', stage.creatureLists.PREDATOR[i].range());
+            }
+            for (let i in stage.creatureLists.LEVIATHAN) {
+                stage.creatureLists.LEVIATHAN[i].renderCircle(ctx, 'green', stage.creatureLists.LEVIATHAN[i].range());
             }
         }
         if (showInteractRangeCheckbox.checked) {

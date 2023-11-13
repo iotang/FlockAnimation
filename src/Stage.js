@@ -88,6 +88,7 @@ class Stage {
             }
 
             if (!list[i].alive()) {
+                addItem(this.itemLists.TARGET, TypeTarget, list[i].x.x, list[i].x.y);
                 list.splice(i, 1);
                 i--;
             }

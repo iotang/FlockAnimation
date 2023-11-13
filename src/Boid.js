@@ -49,9 +49,9 @@ class Boid {
         this.flockArgs.align = this.flockBaseArgs.align * (1 - anxiety / 2);
 
         this.a.limitLength(this.maxAcc);
-        this.a.mul(1 + 3 * anxiety);
+        this.a.mul(1 + anxiety);
         this.v.add(this.a);
-        this.v.limitLength(this.maxVel * (1 + 3 * anxiety));
+        this.v.limitLength(this.maxVel * (1 + anxiety / 3));
         this.x.add(this.v);
         this.a.clear();
 
@@ -159,10 +159,11 @@ class Boid {
 
     breed(list, count, limit) {
         if (this.size < this.maxSize * 0.9) { return; }
-        let perCost = this.size / 2 / count;
+        let perCost = (this.size - this.type.size) / count / 2;
         for (let i = 0; i < count; i++) {
-            this.spawnChild(list, limit);
-            this.size -= perCost;
+            if (this.spawnChild(list, limit)) {
+                this.size -= perCost;
+            }
         }
     }
 
@@ -172,6 +173,28 @@ class Boid {
         ctx.font = '10px';
         ctx.fillStyle = 'gray';
         ctx.fillText(Math.ceil(this.hp), this.x.x - this.size, this.x.y - this.size);
+        ctx.fill();
+        ctx.restore();
+        ctx.closePath();
+    }
+
+    renderSize(ctx) {
+        ctx.beginPath();
+        ctx.save();
+        ctx.font = '10px';
+        ctx.fillStyle = 'gray';
+        ctx.fillText(Math.ceil(this.size), this.x.x - this.size, this.x.y);
+        ctx.fill();
+        ctx.restore();
+        ctx.closePath();
+    }
+
+    renderAge(ctx) {
+        ctx.beginPath();
+        ctx.save();
+        ctx.font = '10px';
+        ctx.fillStyle = 'gray';
+        ctx.fillText(Math.ceil(this.age), this.x.x - this.size, this.x.y + this.size);
         ctx.fill();
         ctx.restore();
         ctx.closePath();
@@ -209,8 +232,14 @@ class Boid {
 
         ctx.closePath();
 
-        if (showhpCheckbox.checked) {
+        if (showHPCheckbox.checked) {
             this.renderHP(ctx);
+        }
+        if (showSizeCheckbox.checked) {
+            this.renderSize(ctx);
+        }
+        if (showAgeCheckbox.checked) {
+            this.renderAge(ctx);
         }
     }
 }

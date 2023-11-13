@@ -62,7 +62,7 @@ class BoidType {
 
 let TypeCreature = new BoidType(CREATURE)
     .setSize(5)
-    .setMaxSize(20)
+    .setMaxSize(15)
     .setMaxHP(100)
     .setHPLoss(0.01)
     .setMaxVel(2.0)
@@ -73,25 +73,25 @@ let TypePredator = new BoidType(PREDATOR)
     .setSize(10)
     .setMaxSize(20)
     .setColor([255, 0, 255])
-    .setMaxHP(300)
+    .setMaxHP(100)
     .setHPLoss(0.1)
     .setMaxVel(2.2)
     .setMaxAcc(0.11)
     .setRangeMultiplier(4)
     .setFlockBaseArgs({
-        cohesion: -0.5,
-        separate: 1.0,
+        cohesion: 0.0,
+        separate: 10.0,
         align: 0.0
     });
 
 let TypeLeviathan = new BoidType(LEVIATHAN)
     .setSize(80)
-    .setMaxSize(200)
+    .setMaxSize(90)
     .setColor([127, 0, 255])
     .setMaxHP(2000)
     .setHPLoss(0.01)
-    .setMaxVel(0.1)
-    .setMaxAcc(0.003)
+    .setMaxVel(0.4)
+    .setMaxAcc(0.03)
     .setRangeMultiplier(2)
     .setFlockBaseArgs({
         cohesion: -1.0,

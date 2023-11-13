@@ -1,4 +1,6 @@
-let showhpCheckbox = document.getElementById('show_hp');
+let showHPCheckbox = document.getElementById('show_hp');
+let showSizeCheckbox = document.getElementById('show_size');
+let showAgeCheckbox = document.getElementById('show_age');
 let showItemRangeCheckbox = document.getElementById('show_item_range');
 let showInteractRangeCheckbox = document.getElementById('show_interact_range');
 
