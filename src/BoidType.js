@@ -64,7 +64,7 @@ let TypeCreature = new BoidType(CREATURE)
     .setSize(5)
     .setMaxSize(15)
     .setMaxHP(100)
-    .setHPLoss(0.01)
+    .setHPLoss(0.02)
     .setMaxVel(2.0)
     .setMaxAcc(0.10)
     .setRangeMultiplier(6);

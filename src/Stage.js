@@ -85,15 +85,17 @@ class Stage {
                 });
             }
             list[i].update();
+            let ret = 0;
             list[i].makeFlockEffect(list);
             for (let j in like) {
-                list[i].makeItemEffect(like[j].list, like[j].weight, like[j].effect);
+                ret += list[i].makeItemEffect(like[j].list, like[j].weight, like[j].effect);
             }
-            list[i].stayInStage();
-            list[i].makeWander();
-
+            ret += list[i].stayInStage();
             if (callback !== undefined) {
-                callback.call(list[i], list, i);
+                ret += callback.call(list[i], list, i);
+            }
+            if (ret <= 0) {
+                list[i].makeWander();
             }
 
             if (!list[i].alive()) {
@@ -110,12 +112,14 @@ class Stage {
             this.updateBoids(behav.list, behav.like,
                 (list, x) => {
                     let current = list[x];
+                    let ret = 0;
                     for (let j in behav.interact) {
-                        current.makeInteractEffect(behav.interact[j].list, behav.interact[j].range, behav.interact[j].weight, behav.interact[j].callback);
+                        ret += current.makeInteractEffect(behav.interact[j].list, behav.interact[j].range, behav.interact[j].weight, behav.interact[j].callback);
                     }
                     if (behav.callback !== undefined) {
                         behav.callback.call(current);
                     }
+                    return ret;
                 },
                 i === CREATURE);
         }

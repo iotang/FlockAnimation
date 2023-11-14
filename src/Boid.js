@@ -93,12 +93,13 @@ class Boid {
         let c = this.flock.cohesion(list);
         let s = this.flock.separate(list);
         let a = this.flock.align(list);
-        c.mul(this.flockArgs.cohesion);
-        s.mul(this.flockArgs.separate);
-        a.mul(this.flockArgs.align);
-        this.addAcc(c);
-        this.addAcc(s);
-        this.addAcc(a);
+        c[0].mul(this.flockArgs.cohesion);
+        s[0].mul(this.flockArgs.separate);
+        a[0].mul(this.flockArgs.align);
+        this.addAcc(c[0]);
+        this.addAcc(s[0]);
+        this.addAcc(a[0]);
+        return c[1] > 0 || s[1] > 0 || a[1] > 0;
     }
 
     makeWander() {
@@ -128,15 +129,16 @@ class Boid {
             }
         }
         if (closeTo !== null) {
-            return this.flock.seek(closeTo.x);
+            return [this.flock.seek(closeTo.x), 1];
         }
-        return new vec2d(0, 0);
+        return [new vec2d(0, 0), 0];
     }
 
     makeItemEffect(list, weight, effect) {
         let dir = this.takeItem(list, this.range(), effect);
-        dir.mul(weight);
-        this.addAcc(dir);
+        dir[0].mul(weight);
+        this.addAcc(dir[0]);
+        return dir[1];
     }
 
     makeInteractEffect(list, range, weight, callback) {
@@ -160,7 +162,9 @@ class Boid {
 
         if (closeTo !== null) {
             this.addAcc(this.flock.seek(closeTo).mul(weight));
+            return 1;
         }
+        return 0;
     }
 
     spawnChild(list, limit) {

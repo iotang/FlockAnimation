@@ -31,9 +31,9 @@ class FlockCalculator {
         if (count > 0) {
             sumacc.div(count);
             sumacc.sub(this.current.x);
-            return this.makeSteer(sumacc);
+            return [this.makeSteer(sumacc), count];
         }
-        return new vec2d(0, 0);
+        return [new vec2d(0, 0), 0];
     }
 
     separate(others) {
@@ -52,9 +52,9 @@ class FlockCalculator {
         }
         if (count > 0) {
             sumacc.div(count);
-            return this.makeSteer(sumacc);
+            return [this.makeSteer(sumacc), count];
         }
-        return new vec2d(0, 0);
+        return [new vec2d(0, 0), 0];
     }
 
     align(others) {
@@ -70,9 +70,9 @@ class FlockCalculator {
         }
         if (count > 0) {
             sumacc.div(count);
-            return this.makeSteer(sumacc);
+            return [this.makeSteer(sumacc), count];
         }
-        return new vec2d(0, 0);
+        return [new vec2d(0, 0), 0];
     }
 
     wander() {
