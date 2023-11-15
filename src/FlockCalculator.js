@@ -82,7 +82,7 @@ class FlockCalculator {
         let wanderCircleRadius = 20;
         let wanderCircle = this.current.v.copy();
         wanderCircle.setLength(wanderCircleDistance);
-        let miniCircle = vec2d.random_unit(this.wanderDirection).setLength(wanderCircleRadius);
+        let miniCircle = vec2d.unit(this.wanderDirection).setLength(wanderCircleRadius);
         let location = vec2d.add(wanderCircle, miniCircle);
         return this.makeSteer(location);
     }
