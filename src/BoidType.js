@@ -80,9 +80,9 @@ let TypePredator = new BoidType(PREDATOR)
     .setRangeMultiplier(4)
     .setFlockBaseArgs({
         cohesion: 0.0,
-        separate: 10.0,
+        separate: 1.0,
         align: 0.0,
-        wander: 1.0,
+        wander: 0.5,
     });
 
 let TypeLeviathan = new BoidType(LEVIATHAN)

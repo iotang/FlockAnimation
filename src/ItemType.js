@@ -45,7 +45,7 @@ let TypeTarget = new ItemType(TARGET)
     .setColor([0, 0, 0])
     .setSize(2);
 
-let TypeSuperTarget = new ItemType(TARGET)
+let TypeSuperTarget = new ItemType(SUPERTARGET)
     .setHPDelta(100)
     .setMaxHPDelta(2)
     .setSizeDelta(1)
