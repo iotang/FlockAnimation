@@ -1,24 +1,24 @@
 class Stage {
 
     constructor() {
-        this.itemBuilders = {};
+        this.itemTypes = {};
         this.itemLists = {};
-        this.creatureBuilders = {};
-        this.creatureLists = {};
+        this.boidTypes = {};
+        this.boidLists = {};
         this.behaviours = {};
     }
 
     makeItems(val) {
-        this.itemBuilders = val;
+        this.itemTypes = val;
         for (const i in val) {
             this.itemLists[i] = [];
         }
     }
 
     makeBoids(val) {
-        this.creatureBuilders = val;
+        this.boidTypes = val;
         for (const i in val) {
-            this.creatureLists[i] = [];
+            this.boidLists[i] = [];
         }
     }
 
@@ -32,14 +32,14 @@ class Stage {
 
     spawnPopulation(val) {
         for (const i in val) {
-            if (this.creatureLists[i] !== undefined) {
-                this.spawnBoids(this.creatureLists[i], this.creatureBuilders[i], val[i]);
+            if (this.boidLists[i] !== undefined) {
+                this.spawnBoids(this.boidLists[i], this.boidTypes[i], val[i]);
             }
         }
     }
 
     makeBehaviour(behav) {
-        let list = this.creatureLists[behav.name];
+        let list = this.boidLists[behav.name];
         if (list === undefined) {
             return;
         }
@@ -56,9 +56,9 @@ class Stage {
         }
         let interact = [];
         for (const i in behav.interact) {
-            if (this.creatureBuilders[i] !== undefined) {
+            if (this.boidTypes[i] !== undefined) {
                 interact.push({
-                    list: this.creatureLists[i],
+                    list: this.boidLists[i],
                     weight: behav.interact[i].weight,
                     range: behav.interact[i].range,
                     callback: behav.interact[i].callback
@@ -126,9 +126,9 @@ class Stage {
     }
 
     render() {
-        for (const i in this.creatureLists) {
-            for (let j = 0; j < this.creatureLists[i].length; j++) {
-                this.creatureLists[i][j].render(ctx);
+        for (const i in this.boidLists) {
+            for (let j = 0; j < this.boidLists[i].length; j++) {
+                this.boidLists[i][j].render(ctx);
             }
         }
         for (const i in this.itemLists) {

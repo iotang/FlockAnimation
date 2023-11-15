@@ -86,7 +86,9 @@ class Boid {
             steer.limitLength(this.maxAcc);
             steer.mul(10);
             this.addAcc(steer);
+            return 1;
         }
+        return 0;
     }
 
     makeFlockEffect(list) {

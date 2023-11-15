@@ -63,21 +63,21 @@ window.onload = function () {
     }
 
     function populationLimit() {
-        while (stage.creatureLists.CREATURE.length < MAX_CREATURES / 10) {
+        while (stage.boidLists.CREATURE.length < MAX_CREATURES / 10) {
             stage.spawnPopulation({
                 CREATURE: 1
             });
         }
-        while (stage.creatureLists.CREATURE.length > MAX_CREATURES) {
-            stage.creatureLists.CREATURE.pop();
+        while (stage.boidLists.CREATURE.length > MAX_CREATURES) {
+            stage.boidLists.CREATURE.pop();
         }
-        while (stage.creatureLists.PREDATOR.length < 1) {
+        while (stage.boidLists.PREDATOR.length < 1) {
             stage.spawnPopulation({
                 PREDATOR: 1
             });
         }
-        while (stage.creatureLists.PREDATOR.length > MAX_PREDATORS) {
-            stage.creatureLists.PREDATOR.pop();
+        while (stage.boidLists.PREDATOR.length > MAX_PREDATORS) {
+            stage.boidLists.PREDATOR.pop();
         }
     }
 
@@ -105,7 +105,7 @@ window.onload = function () {
         },
         callback: function () {
             if (this.size >= this.maxSize * 0.9) {
-                this.breed(stage.creatureLists.CREATURE, Math.ceil(randomlr(15, 30)), MAX_CREATURES);
+                this.breed(stage.boidLists.CREATURE, Math.ceil(randomlr(15, 30)), MAX_CREATURES);
             }
         }
     });
@@ -124,7 +124,7 @@ window.onload = function () {
         },
         interact: {
             CREATURE: {
-                weight: 0.4,
+                weight: 1.0,
                 range: FEELINGS[PREDATOR][CREATURE],
                 callback: function (list, i) {
                     this.maxhp += list[i].size;
@@ -143,7 +143,7 @@ window.onload = function () {
         },
         callback: function () {
             if (this.size >= this.maxSize * 0.9) {
-                this.breed(stage.creatureLists.PREDATOR, 1, MAX_PREDATORS);
+                this.breed(stage.boidLists.PREDATOR, 1, MAX_PREDATORS);
             }
         }
     });
@@ -191,11 +191,11 @@ window.onload = function () {
     canvas.addEventListener('click', function (e) {
         let clickAddType = document.getElementById('click_add').value;
         if (clickAddType == CREATURE) {
-            addBoid(stage.creatureLists.CREATURE, TypeCreature.setX(e.offsetX, e.offsetY).build());
+            addBoid(stage.boidLists.CREATURE, TypeCreature.setX(e.offsetX, e.offsetY).build());
         } else if (clickAddType == PREDATOR) {
-            addBoid(stage.creatureLists.PREDATOR, TypePredator.setX(e.offsetX, e.offsetY).build());
+            addBoid(stage.boidLists.PREDATOR, TypePredator.setX(e.offsetX, e.offsetY).build());
         } else if (clickAddType == LEVIATHAN) {
-            addBoid(stage.creatureLists.LEVIATHAN, TypeLeviathan.setX(e.offsetX, e.offsetY).build());
+            addBoid(stage.boidLists.LEVIATHAN, TypeLeviathan.setX(e.offsetX, e.offsetY).build());
         } else if (clickAddType == TARGET) {
             addBoid(stage.itemLists.TARGET, TypeTarget.setX(e.offsetX, e.offsetY).build());
         } else if (clickAddType == SUPERTARGET) {
@@ -218,29 +218,29 @@ window.onload = function () {
         populationLimit();
 
         if (showItemRangeCheckbox.checked) {
-            for (let i in stage.creatureLists.CREATURE) {
-                stage.creatureLists.CREATURE[i].renderCircle(ctx, 'green', stage.creatureLists.CREATURE[i].range());
+            for (let i in stage.boidLists.CREATURE) {
+                stage.boidLists.CREATURE[i].renderCircle(ctx, 'green', stage.boidLists.CREATURE[i].range());
             }
-            for (let i in stage.creatureLists.PREDATOR) {
-                stage.creatureLists.PREDATOR[i].renderCircle(ctx, 'green', stage.creatureLists.PREDATOR[i].range());
+            for (let i in stage.boidLists.PREDATOR) {
+                stage.boidLists.PREDATOR[i].renderCircle(ctx, 'green', stage.boidLists.PREDATOR[i].range());
             }
-            for (let i in stage.creatureLists.LEVIATHAN) {
-                stage.creatureLists.LEVIATHAN[i].renderCircle(ctx, 'green', stage.creatureLists.LEVIATHAN[i].range());
+            for (let i in stage.boidLists.LEVIATHAN) {
+                stage.boidLists.LEVIATHAN[i].renderCircle(ctx, 'green', stage.boidLists.LEVIATHAN[i].range());
             }
         }
         if (showInteractRangeCheckbox.checked) {
-            for (let i in stage.creatureLists.CREATURE) {
-                stage.creatureLists.CREATURE[i].renderCircle(ctx, 'red', FEELINGS[CREATURE][PREDATOR]);
+            for (let i in stage.boidLists.CREATURE) {
+                stage.boidLists.CREATURE[i].renderCircle(ctx, 'red', FEELINGS[CREATURE][PREDATOR]);
             }
-            for (let i in stage.creatureLists.PREDATOR) {
-                stage.creatureLists.PREDATOR[i].renderCircle(ctx, 'magenta', FEELINGS[PREDATOR][CREATURE]);
+            for (let i in stage.boidLists.PREDATOR) {
+                stage.boidLists.PREDATOR[i].renderCircle(ctx, 'magenta', FEELINGS[PREDATOR][CREATURE]);
             }
 
         }
         renderStatistics({
-            '一般生物': stage.creatureLists.CREATURE.length,
-            '捕食者': stage.creatureLists.PREDATOR.length,
-            '利维坦': stage.creatureLists.LEVIATHAN.length,
+            '一般生物': stage.boidLists.CREATURE.length,
+            '捕食者': stage.boidLists.PREDATOR.length,
+            '利维坦': stage.boidLists.LEVIATHAN.length,
             '目标': stage.itemLists.TARGET.length,
             '特供目标': stage.itemLists.SUPERTARGET.length,
         })

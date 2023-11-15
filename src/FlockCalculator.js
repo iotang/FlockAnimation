@@ -76,13 +76,13 @@ class FlockCalculator {
     }
 
     wander() {
-        this.wanderDirection += randomlr(-0.0001, 0.0001);
+        this.wanderDirection += randomlr(-0.2, 0.2);
 
         let wanderCircleDistance = 100;
-        let wanderCircleRadius = 20;
+        let wanderCircleRadius = 40;
         let wanderCircle = this.current.v.copy();
         wanderCircle.setLength(wanderCircleDistance);
-        let miniCircle = vec2d.unit(this.wanderDirection).setLength(wanderCircleRadius);
+        let miniCircle = vec2d.unit(this.wanderDirection + this.current.v.direction()).setLength(wanderCircleRadius);
         let location = vec2d.add(wanderCircle, miniCircle);
         return this.makeSteer(location);
     }
